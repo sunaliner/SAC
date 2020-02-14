@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang=en>
+
+<head>
+    <meta charset=utf-8>
+    <meta http-equiv=X-UA-Compatible content="IE=edge">
+    <meta name=viewport content="width=device-width,initial-scale=1,user-scalable=no">
+    <meta name=description
+        content="EasyAI is a GUI wrapper around the GPT-2 774M model released by OpenAI. You can discover how the A.I. thinks about the world by asking the most diverse questions and then waiting for the result.">
+    <meta name=author content=Botsociety>
+    <title>StoryAI - Ask the A.I. to complete your ideas, and discover which text the A.I. generates</title>
+    <link rel=apple-touch-icon sizes=57x57
+        href=https://s3.amazonaws.com/botsociety-cache.prod.us/ai10apple-icon-57x57.png>
+    <link rel=apple-touch-icon sizes=60x60
+        href=https://s3.amazonaws.com/botsociety-cache.prod.us/ai10apple-icon-60x60.png>
+    <link rel=apple-touch-icon sizes=72x72
+        href=https://s3.amazonaws.com/botsociety-cache.prod.us/ai10apple-icon-72x72.png>
+    <link rel=apple-touch-icon sizes=76x76
+        href=https://s3.amazonaws.com/botsociety-cache.prod.us/ai10apple-icon-76x76.png>
+    <link rel=apple-touch-icon sizes=114x114
+        href=https://s3.amazonaws.com/botsociety-cache.prod.us/ai10apple-icon-114x114.png>
+    <link rel=apple-touch-icon sizes=120x120
+        href=https://s3.amazonaws.com/botsociety-cache.prod.us/ai10apple-icon-120x120.png>
+    <link rel=apple-touch-icon sizes=144x144
+        href=https://s3.amazonaws.com/botsociety-cache.prod.us/ai10apple-icon-144x144.png>
+    <link rel=apple-touch-icon sizes=152x152
+        href=https://s3.amazonaws.com/botsociety-cache.prod.us/ai10apple-icon-152x152.png>
+    <link rel=apple-touch-icon sizes=180x180
+        href=https://s3.amazonaws.com/botsociety-cache.prod.us/ai10apple-icon-180x180.png>
+    <link rel=icon type=image/png sizes=192x192
+        href=https://s3.amazonaws.com/botsociety-cache.prod.us/ai10android-icon-192x192.png>
+    <link rel=icon type=image/png sizes=32x32
+        href=https://s3.amazonaws.com/botsociety-cache.prod.us/ai10favicon-32x32.png>
+    <link rel=icon type=image/png sizes=96x96
+        href=https://s3.amazonaws.com/botsociety-cache.prod.us/ai10favicon-96x96.png>
+    <link rel=icon type=image/png sizes=16x16
+        href=https://s3.amazonaws.com/botsociety-cache.prod.us/ai10favicon-16x16.png>
+    <link rel=manifest href=/manifest.json>
+    <meta name=msapplication-TileColor content=#ffffff>
+    <meta name=msapplication-TileImage content=/ms-icon-144x144.png>
+    <meta name=theme-color content=#ffffff>
+    <link rel=canonical href=https://storyai.botsociety.io>
+    <meta property=og:url content=https://storyai.botsociety.io>
+    <meta property=og:type content=website>
+    <meta property=og:title
+        content="StoryAI - Ask the A.I. to complete your ideas, and discover which text the A.I. generates">
+    <meta property=og:description content="EasyAI is a GUI wrapper around the GPT-2 774M model released by OpenAI">
+    <meta property=og:image
+        content="https://images.unsplash.com/flagged/photo-1575655186720-f3eda4454723?ixlib=rb-1.2.1&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjg4ODc1fQ">
+    <meta property=og:image:width content=871>
+    <meta property=og:image:height content=564>
+    <!--[if IE]><link rel="stylesheet" type="text/css" href="/css/ie.css"/><![endif]-->
+    <script src=https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js
+        integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin=anonymous></script>
+    <script src=https://code.jquery.com/jquery-3.4.1.min.js
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin=anonymous></script>
+    <script
+        src="https://platform-api.sharethis.com/js/sharethis.js#property=5d5caeaac60153001277c10a&amp;product=inline-share-buttons"></script>
+    <script src=https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js
+        integrity=sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1
+        crossorigin=anonymous></script>
+    <script src=https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js
+        integrity=sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM
+        crossorigin=anonymous></script>
+    <script src=https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js></script>
+    <script src=//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js></script>
+    <script src=/js/siofu.js></script>
+    <script src="/js/main.js?v=2.4.7"></script>
+</head>
+
+<body class="undefined white loading" id=page-top data-spy=scroll data-target=.side-menu><input id=domain
+        val=https://storyai.botsociety.io type=hidden>
+    <nav class="navbar navbar-expand-lg">
+        <div class=container-fluid><a class=navbar-brand href=/><img
+                    src=https://d2d9a1sv0xqzzt.cloudfront.net/ai10brand3.svg height=22 width=70 alt=""
+                    style=margin-right:10px;></a><button class=navbar-toggler type=button data-toggle=collapse
+                data-target=#navbarSupportedContent aria-controls=navbarSupportedContent aria-expanded=false
+                aria-label="Toggle navigation"><i class="fa fa-bars"></i></button>
+            <div class="collapse navbar-collapse justify-content-end" id=navbarSupportedContent>
+                <ul class=navbar-nav>
+                    <li class=nav-item><a class=nav-link href=/search>Search</a></li>
+                    <li class=nav-item><a class=nav-link href=/about>About</a></li>
+                    <li class=nav-item><a class=nav-link href=/login>Login</a></li>
+                    <li class=nav-item><a class=nav-link href=/signup>Sign up</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class=container>
+        <div class=jumbotron>
+            <h1>This A.I. can create any content. Just start it.</h1>
+            <form id=new action=/gen method=POST>
+                <div class=form-group><textarea class=form-control name=input_text
+                        placeholder="Global warming is a huge problem for the whole world. Different countries will react in different ways that we can't predict. The solution is"
+                        autofocus></textarea><button class="btn btn-primary moved" id=create type=submit>Create</button>
+                </div>
+            </form>
+            <p class=alert>The A.I. needs at least 40 words to generate a cool story.</p>
+        </div>
+        <div class=container>
+            <div class=row>
+                <div class=col-md-7>
+                    <h3>The community has created<span class=counter></span>...</h3>
+                </div>
+                <div class=col-md-4>
+                    <div class=sortby-selector><a class=dropdown-toggle data-toggle=dropdown href=#>Sort by <span
+                                class=selected>most recent</span><i class=caret></i></a>
+                        <ul class=dropdown-menu>
+                            <li class=active><a class=sort_by_switch href=# data-sortby=latest
+                                    data-label="most recent">Latest</a></li>
+                            <li><a class=sort_by_switch href=# data-sortby=comments data-label="A.I. answers">A.I.
+                                    answers</a></li>
+                            <li><a class=sort_by_switch href=# data-sortby=views data-label=views>Views</a></li>
+                        </ul>
+                        <caret></caret>
+                    </div>
+                </div>
+            </div>
+            <div class=cards data-sortby=comments2></div>
+            <div class="infinitescrolling inactive">
+                <div class=placeholderOnly></div>
+                <div class=placeholderOnly></div>
+                <div class=placeholderOnly></div>
+                <div class=placeholderOnly></div>
+                <div class=placeholderOnly></div>
+                <div class=placeholderOnly></div>
+                <div class=placeholderOnly></div>
+                <div class=placeholderOnly></div>
+                <div class=placeholderOnly></div>
+            </div>
+        </div>
+    </div>
+    <div class=footer>
+        <div class=row>
+            <div class=col-md-6>
+                <p>Crafted with <i class="fa fa-heart"></i> by <a
+                        href="https://botsociety.io?utm_medium=referral&amp;utm_source=storyai.botsociety.io">Botsociety
+                    </a>in San Francisco</p>
+            </div>
+            <div class=col-md-6>
+                <p class=disclaimer>Warning: Samples are unfiltered and may contain offensive content.</p>
+            </div>
+        </div>
+    </div>
+    <link rel=stylesheet href=https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css
+        integrity=sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T crossorigin=anonymous>
+    <link rel=stylesheet href=//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css>
+    <script src=https://kit.fontawesome.com/d8172e3481.js></script>
+    <link href="/css/public.css?v=2.4.7" rel=stylesheet>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-80178275-5"></script>
+    <script>function gtag() { dataLayer.push(arguments) } window.dataLayer = window.dataLayer || [], gtag("js", new Date), gtag("config", "UA-80178275-5")</script>
+    <input id=bodyClass type=hidden>
+</body>
+
+</html>

@@ -1,0 +1,20 @@
+{
+  "name": "SAC",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "sunaliner <cpfls77@nate.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "node ./ "
+  },
+  "dependencies": {
+    "axios": "^0.19.2",
+    "cheerio": "^1.0.0-rc.3",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mysql": "^2.18.1",
+    "node-schedule": "^1.3.2",
+    "puppeteer": "^2.1.1",
+    "redis": "^3.0.2"
+  }
+}
