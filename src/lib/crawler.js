@@ -11,9 +11,11 @@ const getStoryContext = async storyCode => {
   //페이지로 가라
   try {
     await page.goto("https://storyai.botsociety.io/show/" + storyCode);
+    console.log(
+      "crawler : goto => https://storyai.botsociety.io/show/" + storyCode
+    );
   } catch (error) {
     console.log(error);
-    return undefined;
   }
 
   //로그인 화면이 전환될 때까지 5초만 기다려라
@@ -24,6 +26,7 @@ const getStoryContext = async storyCode => {
     element => element.textContent,
     mainTextEl
   );
+  console.log(mainTextData);
   const resultsData = await Promise.all(
     await resultsEl.map((element, index) => {
       const text = page.evaluate(element => element.textContent, element);
@@ -34,6 +37,7 @@ const getStoryContext = async storyCode => {
   resultsData.map(data => {
     if (data !== undefined || data !== "undefined") results += data + "\n";
   });
+  console.log(results);
   await browser.close();
   return mainTextData + "\n" + results;
 };

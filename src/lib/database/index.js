@@ -69,7 +69,7 @@ const insertQuery = (tableName, params) => {
 
 //  VALUES (데이터값1, 데이터값2, 데이터값3, ...)
 const cancel = () => {
-  connect.end();
+  db.end();
 };
 
 exports.connect = connect;

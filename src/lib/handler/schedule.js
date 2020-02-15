@@ -60,9 +60,11 @@ const dataInsert = async (crawler, database, translater, data, index = 0) => {
       .insert(param)
       .then(res => {
         console.log("database :", param.code, "=> insert success");
+        database.cancel();
       })
       .catch(err => {
         console.log(err);
+        database.cancel();
       });
   } else console.log(context);
 };
