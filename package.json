@@ -5,8 +5,9 @@
   "author": "sunaliner <cpfls77@nate.com>",
   "license": "MIT",
   "scripts": {
-    "start": "node ./ ",
-    "deploy": "nohup node ./ &"
+    "start": "cp ./.env.dev ./.env && node ./ ",
+    "deploy": "cp ./.env.prod ./.env && nohup node ./ &",
+    "test": "cp ./.env.local ./.env && node ./"
   },
   "dependencies": {
     "@google-cloud/translate": "^5.1.6",

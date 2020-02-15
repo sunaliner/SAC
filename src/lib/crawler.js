@@ -1,8 +1,9 @@
 const puppeteer = require("puppeteer");
+const node_env = process.env.NODE_ENV;
 //selenium 이나 phantomjs
 
 const getStoryContext = async storyCode => {
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({ headless: false });
   const page = await browser.newPage();
 
   await page.setDefaultNavigationTimeout(100000);
@@ -29,7 +30,7 @@ const getStoryContext = async storyCode => {
       return text;
     })
   );
-  let results;
+  var results = "";
   resultsData.map(data => {
     if (data !== undefined || data !== "undefined") results += data + "\n";
   });
@@ -37,7 +38,7 @@ const getStoryContext = async storyCode => {
   return mainTextData + "\n" + results;
 };
 const getCardParams = async () => {
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({ headless: false });
   const page = await browser.newPage();
 
   //페이지로 가라
