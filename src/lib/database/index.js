@@ -3,6 +3,8 @@ const post = require("./post");
 
 var db;
 
+process.title = "SAC";
+
 const connect = () => {
   db = mysql.createConnection({
     host: process.env.MYSQL_HOST,
@@ -35,35 +37,32 @@ const getFields = params => {
 };
 const getValues = params => {
   let ref = JSON.stringify(Object.keys(params).map(x => params[x]));
-  ref = ref.replace("[", "");
-  ref = ref.replace("]", "");
+  ref = ref.slice(1, -1);
   return ref;
 };
 const getValuesMulti = params => {
   let ref = "";
   params.map(param => {
-    let p = JSON.stringify(Object.keys(param).map(x => param[x]));
-    p = p.replace("[", "");
-    p = p.replace("]", "");
-    ref += p;
+    let p = getValues(param);
+    ref += " (" + p + ") ";
   });
-  return " (" + ref + ") ";
+  return ref;
 };
 const insertQuery = (tableName, params) => {
   let sql;
-  if (typeof params === "object") {
-    sql = `INSERT INTO ${tableName} (${getFields(params)}) VALUES (${getValues(
-      params
-    )})`;
-  } else if (Array.isArray(params)) {
+  if (Array.isArray(params)) {
     sql = `INSERT INTO ${tableName} (${getFields(
       params[0]
     )}) VALUES ${getValuesMulti(params)}`;
+  } else if (typeof params === "object") {
+    sql = `INSERT INTO ${tableName} (${getFields(params)}) VALUES (${getValues(
+      params
+    )})`;
   } else {
     console.log("insert params null");
     return undefined;
   }
-  console.log(sql);
+  // console.log(sql);
   return query(sql);
 };
 // INSERT INTO 테이블이름(필드이름1, 필드이름2, 필드이름3, ...)

@@ -8,10 +8,15 @@ const getStoryContext = async storyCode => {
   await page.setDefaultNavigationTimeout(100000);
 
   //페이지로 가라
-  await page.goto("https://storyai.botsociety.io/show/" + storyCode);
+  try {
+    await page.goto("https://storyai.botsociety.io/show/" + storyCode);
+  } catch (error) {
+    console.log(error);
+    return undefined;
+  }
 
-  //로그인 화면이 전환될 때까지 .3초만 기다려라
-  await page.waitFor(300);
+  //로그인 화면이 전환될 때까지 5초만 기다려라
+  await page.waitFor(500);
   const mainTextEl = await page.$(".main-text > span");
   const resultsEl = await page.$$(".result > p");
   const mainTextData = await page.evaluate(

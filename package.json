@@ -1,15 +1,15 @@
 {
-  "name": "SAC",
+  "name": "sac",
   "version": "1.0.0",
   "main": "index.js",
   "author": "sunaliner <cpfls77@nate.com>",
   "license": "MIT",
   "scripts": {
-    "start": "node ./ "
+    "start": "node ./ ",
+    "deploy": "nohup node ./ &"
   },
   "dependencies": {
-    "axios": "^0.19.2",
-    "cheerio": "^1.0.0-rc.3",
+    "@google-cloud/translate": "^5.1.6",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "mysql": "^2.18.1",

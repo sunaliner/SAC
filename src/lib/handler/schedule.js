@@ -1,4 +1,4 @@
-const schedule = async (crawler, database) => {
+const schedule = async (crawler, database, translater) => {
   console.log(new Date());
   let dbData;
   let cwData;
@@ -8,8 +8,7 @@ const schedule = async (crawler, database) => {
   dbData = await database.post.select();
   postCount = dbData.length;
 
-  // 저장된 post 수가 100이 넘지 않을 경우 db에 총 100개까지 저장
-  if (dbData && postCount < 100) {
+  if (dbData) {
     cwData = await crawler.getCardParams();
 
     // 중복된 post code 걸러내기
@@ -18,42 +17,43 @@ const schedule = async (crawler, database) => {
         ? true
         : false;
     });
-    // if (cwData[0]) {
-    //   console.log(cwData[0].code);
-    //   const context = await crawler.getStoryContext(cwData[0].code);
-    //   console.log(context);
-    //   if (context)
-    //     await database.post.insert({
-    //       code: cwData[0].code,
-    //       title: cwData[0].title,
-    //       context: context
-    //     });
-    // }
 
     // story 긁어와서 db에 저장
     if (cwData.length > 0 && process.getMaxListeners() <= 100) {
-      const list = await Promise.all(
+      await Promise.all(
         cwData.map(async (data, index) => {
           if (postCount < 100) {
-            const context = await crawler.getStoryContext(data.code);
+            let context = await crawler.getStoryContext(data.code);
+            let isContext = context && context != "\nundefined" ? true : false;
+
             console.log(
               "code :",
-              data.code,
-              "count :",
-              index,
-              "isContext :",
-              context ? true : false
+              data.code + ", count :",
+              index + ", isContext :",
+              isContext
             );
-            return { code: data.code, title: data.title, context: context };
-            // const param = {code:data.code,title:data.title,context:postContext}
-            // await database.post.insert(param)
-            // console.log('code =', code ,'가 저장됨')
+            if (isContext) {
+              context = await translater.translateText(context, "ko");
+              let title = await translater.translateText(data.title, "ko");
+              const param = {
+                code: data.code,
+                title: title,
+                context: context
+              };
+
+              database.post
+                .insert(param)
+                .then(res => {
+                  console.log("database :", param.code, "=> insert success");
+                })
+                .catch(err => {
+                  console.log(err);
+                });
+            }
           }
         })
       );
-      console.log("db insert start");
-      await database.post.insert(list);
-      console.log("db insert finish");
+      console.log("schedule : story post insert finish");
     } else {
       console.log("MaxListeners :", process.getMaxListeners());
     }
