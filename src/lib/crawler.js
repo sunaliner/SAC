@@ -26,7 +26,6 @@ const getStoryContext = async storyCode => {
     element => element.textContent,
     mainTextEl
   );
-  console.log(mainTextData);
   const resultsData = await Promise.all(
     await resultsEl.map((element, index) => {
       const text = page.evaluate(element => element.textContent, element);
@@ -37,7 +36,6 @@ const getStoryContext = async storyCode => {
   resultsData.map(data => {
     if (data !== undefined || data !== "undefined") results += data + "\n";
   });
-  console.log(results);
   await browser.close();
   return mainTextData + "\n" + results;
 };
