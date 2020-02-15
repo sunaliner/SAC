@@ -3,7 +3,7 @@ const node_env = process.env.NODE_ENV;
 //selenium 이나 phantomjs
 
 const getStoryContext = async storyCode => {
-  const browser = await puppeteer.launch({ headless: false });
+  const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
   const page = await browser.newPage();
 
   await page.setDefaultNavigationTimeout(100000);
@@ -38,7 +38,7 @@ const getStoryContext = async storyCode => {
   return mainTextData + "\n" + results;
 };
 const getCardParams = async () => {
-  const browser = await puppeteer.launch({ headless: false });
+  const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
   const page = await browser.newPage();
 
   //페이지로 가라
