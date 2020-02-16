@@ -4,6 +4,19 @@ const puppeteer = require("puppeteer");
 const getStoryContext = async storyCode => {
   const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
   const page = await browser.newPage();
+  await page.setRequestInterception(true);
+  page.on("request", req => {
+    switch (req.resourceType()) {
+      case "stylesheet":
+      case "font":
+      case "image":
+        req.abort();
+        break;
+      default:
+        req.continue();
+        break;
+    }
+  });
 
   await page.setDefaultNavigationTimeout(100000);
 
@@ -17,12 +30,12 @@ const getStoryContext = async storyCode => {
     console.log(error);
   }
 
-  //로그인 화면이 전환될 때까지 5초만 기다려라
-  await page.waitFor(500);
+  //로그인 화면이 전환될 때까지 3초만 기다려라
+  await page.waitFor(3000);
   let mainTextEl = await page.$(".main-text > span");
   let resultsEl = await page.$$(".result > p");
   if (mainTextEl || resultsEl) {
-    await page.waitFor(300);
+    await page.waitFor(5000);
     mainTextEl = await page.$(".main-text > span");
     resultsEl = await page.$$(".result > p");
   }
@@ -48,14 +61,35 @@ const getStoryContext = async storyCode => {
 const getCardParams = async () => {
   const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
   const page = await browser.newPage();
+  await page.setRequestInterception(true);
+  page.on("request", req => {
+    switch (req.resourceType()) {
+      case "stylesheet":
+      case "font":
+      case "image":
+        req.abort();
+        break;
+      default:
+        req.continue();
+        break;
+    }
+  });
 
   //페이지로 가라
   await page.setDefaultNavigationTimeout(100000);
   await page.goto("https://storyai.botsociety.io/");
 
   //로그인 화면이 전환될 때까지 .3초만 기다려라
-  await page.waitFor(300);
-  const elements = await page.$$(".card-body > h5");
+  await page.waitFor(1000);
+  let elements = await page.$$(".card-body > h5");
+  if (elements.length <= 0) {
+    await page.waitFor(3000);
+    elements = await page.$$(".card-body > h5");
+    if (elements.length <= 0) {
+      await page.waitFor(5000);
+      elements = await page.$$(".card-body > h5");
+    }
+  }
   const params = await Promise.all(
     await elements.map((element, index) => {
       const param = page.evaluate(

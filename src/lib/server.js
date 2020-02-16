@@ -16,13 +16,13 @@ const start = (handler, route) => {
 
   switch (node_env) {
     case "development":
-      var scheduler = schedule.scheduleJob("*/2 * * * *", () => {
-        console.log("database connect!");
-        database.connect();
-        console.log(new Date(), "=> 크롤링 시작!");
+      // var scheduler = schedule.scheduleJob("*/2 * * * *", () => {
+      console.log("database connect!");
+      database.connect();
+      console.log(new Date(), "=> 크롤링 시작!");
 
-        handler.schedule(crawler, database, translater, node_env);
-      });
+      handler.schedule(crawler, database, translater, node_env);
+      // });
       break;
     case "local":
       console.log("database connect!");

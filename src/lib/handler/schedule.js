@@ -9,28 +9,31 @@ const schedule = async (crawler, database, translater, node_env) => {
   if (dbData) {
     cwData = await crawler.getCardParams();
 
+    console.log("crawler count : ", cwData.length);
     // 중복된 post code 걸러내기
-    cwData = cwData.filter(value => {
-      return dbData.find(x => x.code === value.code) === undefined
-        ? true
-        : false;
-    });
+    if (dbData.length > 0)
+      cwData = cwData.filter(value => {
+        return dbData.find(x => x.code === value.code) === undefined
+          ? true
+          : false;
+      });
 
     if (cwData.length > 0 && node_env === "local") {
       dataInsert(crawler, database, translater, cwData[0]);
     }
 
     // story 긁어와서 db에 저장
-    if (
-      cwData.length > 0 &&
-      process.getMaxListeners() <= 100 &&
-      node_env !== "local"
-    ) {
-      await Promise.all(
-        cwData.map(async (data, index) => {
-          await dataInsert(crawler, database, translater, data, index);
-        })
-      );
+    console.log("crawler count - db : ", cwData.length);
+    if (cwData.length > 0 && node_env !== "local") {
+      await cwData.reduce(async (fn, data, index) => {
+        await fn;
+        return dataInsert(crawler, database, translater, data, index);
+      }, Promise.resolve());
+      // await Promise.all(
+      //   cwData.map((data, index) => {
+      //     return dataInsert(crawler, database, translater, data, index);
+      //   })
+      // );
       console.log("schedule : story post insert finish");
     } else {
       console.log("MaxListeners :", process.getMaxListeners());
