@@ -3,12 +3,13 @@ const database = require("./database");
 const dotenv = require("dotenv");
 const crawler = require("./crawler");
 const translater = require("./translater");
-const schedule = require("node-schedule");
+const cron = require("node-cron");
 
 dotenv.config();
 
 // const app = express();
 const node_env = process.env.NODE_ENV;
+var job = false;
 
 const start = (handler, route) => {
   // app.get("/", function(req, res) {});
@@ -32,8 +33,7 @@ const start = (handler, route) => {
       handler.schedule(crawler, database, translater, node_env);
       break;
     case "production":
-      var job = false;
-      var scheduler = schedule.scheduleJob("0,4,8,12,16,20 * * *", () => {
+      var scheduler = cron.schedule("* */4 * * *", () => {
         if (!job) {
           job = true;
           console.log("database connect!");
