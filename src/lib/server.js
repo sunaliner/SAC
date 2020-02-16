@@ -33,7 +33,7 @@ const start = (handler, route) => {
       handler.schedule(crawler, database, translater, node_env);
       break;
     case "production":
-      var scheduler = cron.schedule("* */4 * * *", () => {
+      var scheduler = cron.schedule("0 0,4,8,12,16,20 * * *", () => {
         if (!job) {
           job = true;
           console.log("database connect!");
