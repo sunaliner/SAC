@@ -1,5 +1,4 @@
 const puppeteer = require("puppeteer");
-const node_env = process.env.NODE_ENV;
 //selenium 이나 phantomjs
 
 const getStoryContext = async storyCode => {
@@ -20,8 +19,13 @@ const getStoryContext = async storyCode => {
 
   //로그인 화면이 전환될 때까지 5초만 기다려라
   await page.waitFor(500);
-  const mainTextEl = await page.$(".main-text > span");
-  const resultsEl = await page.$$(".result > p");
+  let mainTextEl = await page.$(".main-text > span");
+  let resultsEl = await page.$$(".result > p");
+  if (mainTextEl || resultsEl) {
+    await page.waitFor(300);
+    mainTextEl = await page.$(".main-text > span");
+    resultsEl = await page.$$(".result > p");
+  }
   const mainTextData = await page.evaluate(
     element => element.textContent,
     mainTextEl
@@ -37,13 +41,16 @@ const getStoryContext = async storyCode => {
     if (data !== undefined || data !== "undefined") results += data + "\n";
   });
   await browser.close();
-  return mainTextData + "\n" + results;
+  if (resultsData && results && results !== "" && resultsData !== "")
+    return mainTextData + "\n" + results;
+  else return undefined;
 };
 const getCardParams = async () => {
   const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
   const page = await browser.newPage();
 
   //페이지로 가라
+  await page.setDefaultNavigationTimeout(100000);
   await page.goto("https://storyai.botsociety.io/");
 
   //로그인 화면이 전환될 때까지 .3초만 기다려라

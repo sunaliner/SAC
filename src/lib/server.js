@@ -16,7 +16,7 @@ const start = (handler, route) => {
 
   switch (node_env) {
     case "development":
-      var scheduler = schedule.scheduleJob("* */1 * * * *", () => {
+      var scheduler = schedule.scheduleJob("*/2 * * * *", () => {
         console.log("database connect!");
         database.connect();
         console.log(new Date(), "=> 크롤링 시작!");
@@ -32,7 +32,7 @@ const start = (handler, route) => {
       handler.schedule(crawler, database, translater, node_env);
       break;
     case "production":
-      var scheduler = schedule.scheduleJob("* * */5 * * *", () => {
+      var scheduler = schedule.scheduleJob("*/4 * * *", () => {
         console.log("database connect!");
         database.connect();
         console.log(new Date(), "=> 크롤링 시작!");

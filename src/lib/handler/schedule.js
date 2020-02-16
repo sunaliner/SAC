@@ -40,7 +40,10 @@ const schedule = async (crawler, database, translater, node_env) => {
 
 const dataInsert = async (crawler, database, translater, data, index = 0) => {
   let context = await crawler.getStoryContext(data.code);
-  let isContext = context && context != "\nundefined" ? true : false;
+  let isContext =
+    context && context != "\nundefined" && (context !== "") & (context !== " ")
+      ? true
+      : false;
   console.log(
     "code :",
     data.code + ", count :",
@@ -60,11 +63,9 @@ const dataInsert = async (crawler, database, translater, data, index = 0) => {
       .insert(param)
       .then(res => {
         console.log("database :", param.code, "=> insert success");
-        database.cancel();
       })
       .catch(err => {
         console.log(err);
-        database.cancel();
       });
   } else console.log(context);
 };
