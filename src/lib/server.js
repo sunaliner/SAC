@@ -32,12 +32,22 @@ const start = (handler, route) => {
       handler.schedule(crawler, database, translater, node_env);
       break;
     case "production":
-      var scheduler = schedule.scheduleJob("*/4 * * *", () => {
-        console.log("database connect!");
-        database.connect();
-        console.log(new Date(), "=> 크롤링 시작!");
-
-        handler.schedule(crawler, database, translater, node_env);
+      var job = false;
+      var scheduler = schedule.scheduleJob("0,4,8,12,16,20 * * *", () => {
+        if (!job) {
+          job = true;
+          console.log("database connect!");
+          database.connect();
+          console.log(new Date(), "=> 크롤링 시작!");
+          handler
+            .schedule(crawler, database, translater, node_env)
+            .then(() => {
+              job = false;
+            })
+            .catch(() => {
+              job = false;
+            });
+        }
       });
       break;
 
@@ -45,7 +55,7 @@ const start = (handler, route) => {
       break;
   }
 
-  process.setMaxListeners(100);
+  process.setMaxListeners(20);
   // app.listen(3000, () => console.log("Server running on port 3000!"));
 };
 exports.start = start;
