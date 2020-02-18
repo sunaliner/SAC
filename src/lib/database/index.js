@@ -14,6 +14,10 @@ const connect = () => {
   });
 
   db.connect();
+  db.on("error", function(err) {
+    console.log(err.code); // 'ER_BAD_DB_ERROR'
+    console.log("database close!");
+  });
 };
 
 const query = sql => {
@@ -70,6 +74,7 @@ const insertQuery = (tableName, params) => {
 //  VALUES (데이터값1, 데이터값2, 데이터값3, ...)
 const cancel = () => {
   db.end();
+  console.log("database close!");
 };
 
 exports.connect = connect;

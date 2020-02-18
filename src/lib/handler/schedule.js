@@ -19,7 +19,7 @@ const schedule = async (crawler, database, translater, node_env) => {
       });
 
     if (cwData.length > 0 && node_env === "local") {
-      dataInsert(crawler, database, translater, cwData[0]);
+      await dataInsert(crawler, database, translater, cwData[0]);
     }
 
     // story 긁어와서 db에 저장
@@ -29,11 +29,6 @@ const schedule = async (crawler, database, translater, node_env) => {
         await fn;
         return dataInsert(crawler, database, translater, data, index);
       }, Promise.resolve());
-      // await Promise.all(
-      //   cwData.map((data, index) => {
-      //     return dataInsert(crawler, database, translater, data, index);
-      //   })
-      // );
       console.log("schedule : story post insert finish");
     } else {
       console.log("MaxListeners :", process.getMaxListeners());
